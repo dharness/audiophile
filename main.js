@@ -1,4 +1,5 @@
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, ipcMain} = require('electron');
+const {download} = require('electron-dl');
 
 let win
 
@@ -11,6 +12,9 @@ function createWindow () {
   win.on('closed', () => {
     win = null
   })
+  win.webContents.session.on('will-download', () => {
+    console.log('download downlaod');
+  });
 }
 
 app.on('ready', createWindow)
@@ -26,3 +30,13 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+// Events
+
+ipcMain.on('download-btn', (e, args) => {
+  const downloadOptions = { directory: './data' };
+  download(BrowserWindow.getFocusedWindow(), args.url, downloadOptions)
+      .then(dl => console.log(dl.getSavePath()))
+      .catch(console.error);
+})
+

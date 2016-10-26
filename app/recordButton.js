@@ -1,6 +1,7 @@
 const Vue = require('vue');
 require('./styles/record-button.css');
 const blobUtil = require('blob-util');
+const electron = require('electron')
 
 // Set this here as a global var because we need it in
 // both styles and logic. Not sure of a better way
@@ -36,7 +37,7 @@ const recordButtonComponent = Vue.component('record-button', {
       var hyperlink = document.createElement('a');
       hyperlink.href = URL.createObjectURL(blob);
       hyperlink.target = '_blank';
-      // hyperlink.download = 'blob.wav';
+      hyperlink.download = 'blob.wav';
 
       var evt = new MouseEvent('click', {
           view: window,
@@ -48,7 +49,8 @@ const recordButtonComponent = Vue.component('record-button', {
       document.body.appendChild(hyperlink);
       blobUtil.blobToArrayBuffer(blob).then((arrayBuffer) => {
         let uint16Array = new Uint16Array(arrayBuffer);
-        this.onComplete(uint16Array);
+        // this.onComplete(uint16Array);
+        electron.ipcRenderer.send('download-btn', {url: hyperlink.href})
       })
       // hyperlink.dispatchEvent(evt);
     },
@@ -59,7 +61,5 @@ const recordButtonComponent = Vue.component('record-button', {
     }
   }
 });
-
-
 
 module.exports = recordButtonComponent;
