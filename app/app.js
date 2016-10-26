@@ -11,6 +11,8 @@ require('./styles/layout.css');
 var RecordRTC = require('recordrtc');
 var Chart = require('chart.js');
 const electronApp = require('electron').remote.app;
+const processAudio = require('./processAudio.js');
+const fs = require('fs');
 
 
 navigator.mediaDevices.getUserMedia({audio: true})
@@ -34,6 +36,7 @@ navigator.mediaDevices.getUserMedia({audio: true})
               <source :src=currentFile type="audio/mp3">
             </audio>
             <record-button :recorder=recorder :on-complete=onComplete></record-button>
+            <button v-on:click="upload"> Upload </button>
           </div>
         </div>
       `,
@@ -50,7 +53,20 @@ navigator.mediaDevices.getUserMedia({audio: true})
           this.currentFile = `${electronApp.getAppPath()}/data/${fileName}`;
           audio.load();
           audio.play();
+        },
+        upload() {
+          const testFolder = './data';
+          fs.readdir(testFolder, (err, files) => {
+            files.forEach(fileName => {
+              if (fileName.split('.')[1] === 'wav') {
+                const filePath = `${electronApp.getAppPath()}/data/${fileName}`;
+                processAudio(filePath).then(amplitudes => {
+                  console.log(amplitudes.length);
+                })
+              }
+            })
+          })
         }
-      }
+      },
     })
 });

@@ -1,5 +1,6 @@
 const Vue = require('vue');
 const fs = require('fs');
+const chokidar = require('chokidar');
 require('./styles/file-viewer.css');
 
 const fileViewer = Vue.component('file-viewer', {
@@ -15,6 +16,10 @@ const fileViewer = Vue.component('file-viewer', {
   data() { return { files: [] }; },
   props: ['file-selected'],
   created() {
+    const watcher = chokidar.watch('./data', {ignored: /^\./, persistent: true});
+    watcher.on('add', (path) => {
+      console.log(path);
+    });
     const testFolder = './data';
     fs.readdir(testFolder, (err, files) => {
       files.forEach((f) => {

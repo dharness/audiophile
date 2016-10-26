@@ -9,7 +9,7 @@ const recordTime = 3000;
 
 const recordButtonComponent = Vue.component('record-button', {
   template: `
-    <button :style=style class="record-button" v-bind:class="{ 'loading': recording}" v-on:click=startRecording>
+    <button :disabled=recording :style=style class="record-button" v-bind:class="{ 'loading': recording}" v-on:click=startRecording>
       <div v-if="recording">Recording...</div>
       <div v-else>Record!</div>
     </button>
