@@ -1,0 +1,21 @@
+.files-list {
+  list-style: none;
+  padding: 0;
+}
+
+.files-list li {
+  width: 100%;
+}
+
+.files-list button {
+  background: none;
+  border: solid 1px var(--file-button-color);
+  border-radius: 0px;
+  width: 100%;
+  padding: 20px;
+}
+
+.files-list button:hover {
+  background: var(--file-button-color);
+  cursor: pointer;
+}

@@ -1,8 +1,16 @@
 const Vue = require('vue');
+// Components
 const recordButton = require('./recordButton.js');
-var RecordRTC = require('recordrtc');
+const fileViewer = require('./fileViewer.js');
+const soundViewer = require('./soundViewer.js');
+// Styles
 require('./styles/override.css');
-var Chart = require('chart.js')
+require('./styles/colors.css');
+require('./styles/layout.css');
+// Etc
+var RecordRTC = require('recordrtc');
+var Chart = require('chart.js');
+const electronApp = require('electron').remote.app;
 
 
 navigator.mediaDevices.getUserMedia({audio: true})
@@ -16,38 +24,33 @@ navigator.mediaDevices.getUserMedia({audio: true})
 
     var app = new Vue({
       el: '#Recorder-App',
-      data: { recorder },
       template: `
-        <div>
-          <canvas id="myChart" width="400" height="400"></canvas>
-          <h1> Sqwak Recorder </h1>
-          <audio id="audioPlayer" controls="controls" style="display: none">
-            <source id="audioPlayerSource" src="http://www.w3schools.com/tags/horse.ogg" type="audio/mp3">
-          </audio>
-          <record-button :recorder=recorder :on-complete=onComplete></record-button>
-        </div>  
+        <div class="app-layout">
+          <file-viewer :file-selected=displayFile></file-viewer>
+          <div class="main-panel">
+            <h1 class="title"> Sqwak Labs </h1>
+            <sound-viewer :src=currentFile></sound-viewer>
+            <audio id="audioPlayer" controls="controls" class="audio-player">
+              <source :src=currentFile type="audio/mp3">
+            </audio>
+            <record-button :recorder=recorder :on-complete=onComplete></record-button>
+          </div>
+        </div>
       `,
+      data: {
+        recorder,
+        currentFile: ''
+      },
       methods: {
         onComplete(data) {
-          let mappable = [];
-          let labels = [];
-          data.forEach((e, i) => {
-            mappable.push(+e);
-            labels.push(i + " Label");
-          });
-          var ctx = document.getElementById("myChart");
-          var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-              labels: labels,
-              datasets: [{
-                  data: mappable,
-              }]
-            }
-          });
+          console.log('New Recording!!');
+        },
+        displayFile(fileName) {
+          const audio = document.getElementById('audioPlayer');
+          this.currentFile = `${electronApp.getAppPath()}/data/${fileName}`;
+          audio.load();
+          audio.play();
         }
-      },
-      mounted() {
       }
     })
 });

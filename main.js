@@ -4,7 +4,8 @@ const {download} = require('electron-dl');
 let win
 
 function createWindow () {
-  win = new BrowserWindow({width: 1000, height: 600})
+  win = new BrowserWindow();
+  win.maximize();
 
   win.loadURL(`file://${__dirname}/index.html`)
 

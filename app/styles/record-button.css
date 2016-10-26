@@ -5,7 +5,7 @@
   height: 45px;
   display: block;
   margin: auto;
-  
+
   background: linear-gradient(to left, white 50%, #67B845 50%);
   background-size: 200% 100%;
   background-position: right bottom;
@@ -15,5 +15,5 @@
 .record-button.loading {
   background-position: left bottom;
   border-radius: 0px;
-  width: 100%;
+  width: 80%;
 }
