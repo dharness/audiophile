@@ -1,20 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <!-- build:remove -->
-    <!-- Connect to server process -->
-    <script>require('electron-connect').client.create()</script>
-    <!-- end:build -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Sqwak Audio Recorder</title>
+    <title>Sqwak Recorder</title>
   </head>
   <body>
-    <audio id="audioPlayer" controls="controls">
-      <source id="audioPlayerSource" src="http://www.w3schools.com/tags/horse.ogg" type="audio/mp3">
-    </audio>
-    <button id="recordButton">Record</button>
-    <button id="stopButton">Stop</button>
-    <script type="text/javascript" src="recorder.js"></script>
+    <div id="Recorder-App"></div>
   </body>
+  <script type="text/javascript" src="https://unpkg.com/vue@2.0.3/dist/vue.js"></script>
+  <script src="http://localhost:8080/webpack-dev-server.js"></script>
+  <script src="http://localhost:8080/bundle.js"></script>
 </html>
