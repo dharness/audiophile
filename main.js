@@ -1,24 +1,24 @@
 const {app, BrowserWindow, ipcMain} = require('electron');
 const {download} = require('electron-dl');
+const mongoService = require('./app/mongoService.js')
 
 let win
 
 function createWindow () {
   win = new BrowserWindow();
-  win.maximize();
 
   win.loadURL(`file://${__dirname}/index.html`)
-
-  win.webContents.openDevTools()
+  win.toggleDevTools();
   win.on('closed', () => {
     win = null
   })
-  win.webContents.session.on('will-download', () => {
-    console.log('download downlaod');
-  });
 }
 
-app.on('ready', createWindow)
+app.on('ready', ()=> {
+  mongoService.init().then(() => {
+    createWindow()
+  });
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -39,5 +39,16 @@ ipcMain.on('download-btn', (e, args) => {
   download(BrowserWindow.getFocusedWindow(), args.url, downloadOptions)
       .then(dl => console.log(dl.getSavePath()))
       .catch(console.error);
+})
+
+ipcMain.on('toggle-devtools', (e, args) => {
+  win.toggleDevTools();
+})
+
+ipcMain.on('save-sqwaks', (e, args) => {
+  mongoService.save(args.data).then(r => {
+    r && console.log(r);
+    console.log('Success!');
+  });
 })
 

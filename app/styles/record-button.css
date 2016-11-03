@@ -1,3 +1,10 @@
+.record-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
 .record-button {
   border: solid 2px #67B845;
   border-radius: 50px;

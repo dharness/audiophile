@@ -1,0 +1,15 @@
+.main-panel-tabs {
+  height: 100%;
+}
+
+.audio-player {
+  width: 100%;
+}
+
+.kv-form .form-group {
+  display: flex;
+}
+
+.kv-form .form-group input {
+  width: 30%;
+}

@@ -14,6 +14,9 @@ const soundViewer = Vue.component('sound-viewer', {
     this.wavesurfer = WaveSurfer.create({
       container: '#waveform'
     });
+    if (this.src) {
+      this.wavesurfer.load(this.src);
+    }
   },
   watch: {
     src() {

@@ -3,6 +3,7 @@ var wav = require('wav');
 const Transform = require('stream').Transform;
 const Writable = require('stream').Writable;
 
+const MAX_AMPLITUES = 540672;
 
 // This is here because I wasn't sure how to make a transform stream
 // that doesn't eventually write
@@ -44,6 +45,9 @@ function getAmplitudes(filePath) {
 
       logStream.on('end', () => {
         let amplitudes = log.amplitudes;
+        if (amplitudes.length != MAX_AMPLITUES) {
+          amplitudes = pad(amplitudes);
+        }
         resolve(amplitudes);
       });
       logStream.pipe(new Noop(format));
@@ -52,6 +56,13 @@ function getAmplitudes(filePath) {
     // pipe the WAVE file to the Reader instance
     file.pipe(reader);
   });
+}
+
+function pad(array) {
+  var padding = [];
+  for (var i = 0; i < (MAX_AMPLITUES - array.length); i++) padding[i] = 0;
+
+  return [...array, ...padding]
 }
 
 module.exports = getAmplitudes;
