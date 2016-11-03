@@ -1,6 +1,7 @@
 const {app, BrowserWindow, ipcMain} = require('electron');
 const {download} = require('electron-dl');
 const mongoService = require('./app/mongoService.js')
+const fs = require('fs');
 
 let win
 
@@ -48,7 +49,11 @@ ipcMain.on('toggle-devtools', (e, args) => {
 ipcMain.on('save-sqwaks', (e, args) => {
   mongoService.save(args.data).then(r => {
     r && console.log(r);
-    console.log('Success!');
+    args.data.forEach(file => {
+      let oldPath = `./data/${file.fileName}`;
+      let newPath = `./data/.tmpaudio/${file.fileName}`;
+      fs.rename(oldPath, newPath, ()=> {console.log(`moved ${file.fileName}`);})
+    })
   });
 })
 
