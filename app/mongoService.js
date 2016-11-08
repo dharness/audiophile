@@ -1,10 +1,11 @@
 var MongoClient = require('mongodb').MongoClient;
+const mongoUrl = "mongodb://sqwak-experiments:bluecakes@ds147377.mlab.com:47377/sqwak-experminets"
 
 class MongoService {
 
   init() {
     return new Promise((resolve, reject) => {
-      MongoClient.connect("mongodb://localhost:27017/Sqwak", (err, database) => {
+      MongoClient.connect(mongoUrl, (err, database) => {
         if (err) {
           console.dir(err);
           reject(err);
