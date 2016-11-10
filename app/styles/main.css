@@ -10,6 +10,16 @@
   display: flex;
 }
 
-.kv-form .form-group input {
-  width: 30%;
+.kv-form .kv-form-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.kv-form .kv-form-items .kv-form-item {
+  width: 80%;
+  border-top: solid 1px grey;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
 }

@@ -9,21 +9,62 @@ const uploadPanel = Vue.component('upload-panel', {
   template: `
     <div>
       <div class="kv-form" v-if="isKvForm">
-        <label>Add the file attributes</label>
-        <div class="form-group" v-for="kvp in kvps">
-          <input type="text" class="form-control" placeholder="Key" v-model="kvp.key" >
-          <input v-if="kvp.type == 'string'" type="text" class="form-control" placeholder="Value" v-model="kvp.value">
-          <input v-if="kvp.type == 'bool'" type="checkbox" class="form-control" placeholder="Value" v-model="kvp.value">
-          <input v-if="kvp.type == 'number'" type="number" class="form-control" placeholder="Value" v-model="kvp.value">
-          <select v-model="kvp.type">
-            <option value="bool">bool</option>
-            <option value="string">string</option>
-            <option value="number">number</option>
-          </select>
+        <h4 style="margin-left: 10%;">Add the file attributes</h4>
+
+
+        <div class="form-group kv-form-items">
+
+          <div class="kv-form-item">
+            <label>Label</label>
+            <select>
+              <option> shmaw </option>
+              <option> doo </option>
+              <option> poo </option>
+            </select>
+          </div>
+
+          <div class="kv-form-item">
+            <label>Normalized</label>
+            <input type="checkbox" />
+          </div>
+
+          <div class="kv-form-item">
+            <label>Sample Rate</label>
+          </div>
+
+          <div class="kv-form-item">
+            <label>Bits Per Sample</label>
+          </div>
+
+          <div class="kv-form-item">
+            <label>Audio Channels</label>
+          </div>
+
+
+          <div class="kv-form-item">
+            <label>Compression</label>
+          </div>
+
+          <div class="kv-form-item">
+            <label>Author Name</label>
+          </div>
+
+          <div class="kv-form-item">
+            <label>Gender</label>
+          </div>
+
+          <div class="kv-form-item">
+            <label>Background Noise</label>
+          </div>
+
+
+          <div class="kv-form-item">
+            <label>Equalized</label>
+          </div>
+
         </div>
-        <button class="btn btn-form btn-positive" v-on:click=addKvPair>Add</button>
-        <div class="form-actions">
-          <button type="submit" class="btn btn-form btn-primary" v-on:click=createMongoData>OK</button>
+        <div class="form-actions" style="width: 80%; margin: auto;">
+          <button type="submit" style="float: right" class="btn btn-form btn-primary" v-on:click=createMongoData :disabled=isUploading>Continue</button>
         </div>
       </div>
       <div v-else>
@@ -43,12 +84,13 @@ const uploadPanel = Vue.component('upload-panel', {
       </div>
     </div>
     `,
-              // <td v-for="key in data">{{key}}</td>
+
     data: () => {
       return {
         kvps: [],
         isKvForm: true,
-        mongoData: []
+        mongoData: [],
+        isUploading: false
       }
     },
     methods: {
@@ -63,15 +105,13 @@ const uploadPanel = Vue.component('upload-panel', {
         })
         return attributes
       },
-      addKvPair() {
-        this.kvps.push({type: "string"})
-      },
 
       uploadToMongo() {
         electron.ipcRenderer.send('save-sqwaks', {data: this.mongoData});
       },
+
       createMongoData() {
-        this.loading = true;
+        this.isUploading = true;
         let a = this.kvps.reduce((o, e) => {
           if (e.key && e.value) {
             o[e.key] = e.value;

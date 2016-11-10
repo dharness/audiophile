@@ -6,6 +6,7 @@ var chokidar = global['require']('chokidar');
 const fileViewer = Vue.component('file-viewer', {
   template: `
     <div class="file-viewer">
+      <h4>{{files.length}}</h4>
       <ul class="list-group">
         <li class="list-group-header">
           <input class="form-control" type="text" placeholder="Search for someone">
