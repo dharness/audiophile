@@ -47,19 +47,27 @@ const uploadPanel = Vue.component('upload-panel', {
 
           <div class="kv-form-item">
             <label>Author Name</label>
+            <input placeholder='name'></input>
           </div>
 
           <div class="kv-form-item">
             <label>Gender</label>
+            <select>
+              <option> female </option>
+              <option> male </option>
+              <option> other </option>
+            </select>
           </div>
 
           <div class="kv-form-item">
             <label>Background Noise</label>
+            <input type="checkbox" />
           </div>
 
 
           <div class="kv-form-item">
             <label>Equalized</label>
+            <input type="checkbox" />
           </div>
 
         </div>
